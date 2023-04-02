@@ -7,7 +7,10 @@ import Link from "next/link";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
+// Define the PostWithUser type using RouterOutputs type
 type PostWithUser = RouterOutputs["posts"]["getAll"][number];
+
+// PostView component takes  aPostWithUser object as a prop
 export const PostView = (props: PostWithUser) => {
   const { post, author } = props;
   return (

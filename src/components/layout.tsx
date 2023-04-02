@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from "react";
 
+// Defines a component that serves as a layout for the entire application
 export const PageLayout = (props: PropsWithChildren) => {
   return (
     <main className="flex h-screen justify-center">

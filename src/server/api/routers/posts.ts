@@ -13,6 +13,7 @@ import { Redis } from "@upstash/redis";
 import { filterUserForClient } from "~/server/helpers/filterUserForClient";
 import { type Post } from "@prisma/client";
 
+// Function to add user data to posts
 const addUserDataToPosts = async (posts: Post[]) => {
   const users = (
     await clerkClient.users.getUserList({
@@ -47,7 +48,9 @@ const ratelimit = new Ratelimit({
   analytics: true,
 });
 
+// Define the postsRouter for handling post-related API calls
 export const postsRouter = createTRPCRouter({
+  // Route for getting a post by ID
   getById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -60,6 +63,7 @@ export const postsRouter = createTRPCRouter({
       return (await addUserDataToPosts([post]))[0];
     }),
 
+  // Route for getting all posts
   getAll: publicProcedure.query(async ({ ctx }) => {
     const posts = await ctx.prisma.post.findMany({
       take: 100,
@@ -69,6 +73,7 @@ export const postsRouter = createTRPCRouter({
     return addUserDataToPosts(posts);
   }),
 
+  // Route for getting posts by user ID
   getPostsByUserId: publicProcedure
     .input(
       z.object({
@@ -87,6 +92,7 @@ export const postsRouter = createTRPCRouter({
         .then(addUserDataToPosts)
     ),
 
+  // Route for creating a new post
   create: privateProcedure
     .input(
       z.object({

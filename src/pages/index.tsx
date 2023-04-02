@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { PageLayout } from "~/components/layout";
 import { PostView } from "~/components/postview";
 
+// Define CreatePostWizard component for creating a new post
 const CreatePostWizard = () => {
   const { user } = useUser();
 
@@ -16,6 +17,7 @@ const CreatePostWizard = () => {
 
   const ctx = api.useContext();
 
+  // Handle create post mutation with success and error callbacks
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSuccess: () => {
       setInput("");
@@ -33,6 +35,7 @@ const CreatePostWizard = () => {
 
   if (!user) return null;
 
+  // Render the CreatePostWizard component
   return (
     <div className="flex w-full gap-3">
       <UserButton
@@ -73,6 +76,7 @@ const CreatePostWizard = () => {
   );
 };
 
+// Define Feed component for displaying a list of posts
 const Feed = () => {
   const { data, isLoading: postsLoading } = api.posts.getAll.useQuery();
 
@@ -89,13 +93,14 @@ const Feed = () => {
   );
 };
 
+// Define Home componenet for the main page
 const Home: NextPage = () => {
   const { isLoaded: userLoaded, isSignedIn } = useUser();
 
   // Start fetching asap
   api.posts.getAll.useQuery();
 
-  // Return empty div if user isn't loaded yet
+  // Return empty div if user data hasn't loaded yet
   if (!userLoaded) return <div />;
 
   return (
