@@ -5,10 +5,14 @@ import { PageLayout } from "~/components/layout";
 import { PostView } from "~/components/postview";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 
+// Define SinglePostPage component
 const SinglePostPage: NextPage<{ id: string }> = ({ id }) => {
+  // Fetch post data by ID using tRPC hook
   const { data } = api.posts.getById.useQuery({
     id,
   });
+
+  // If no data is found, return a 404 message
   if (!data) return <div>404</div>;
 
   return (
@@ -23,6 +27,7 @@ const SinglePostPage: NextPage<{ id: string }> = ({ id }) => {
   );
 };
 
+// Define the getStaticProps function to fetch data at build time
 export const getStaticProps: GetStaticProps = async (context) => {
   const ssg = generateSSGHelper();
 
@@ -30,6 +35,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   if (typeof id !== "string") throw new Error("no id");
 
+  // Prefetch the post data by ID using the SSG helper
   await ssg.posts.getById.prefetch({ id });
 
   return {
@@ -40,6 +46,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 };
 
+// Define the getStaticPaths function to set up Incremental Static Regeneration (ISR)
 export const getStaticPaths = () => {
   return { paths: [], fallback: "blocking" };
 };

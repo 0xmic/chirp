@@ -4,16 +4,18 @@ import { env } from "~/env.mjs";
 import { createTRPCContext } from "~/server/api/trpc";
 import { appRouter } from "~/server/api/root";
 
-// export API handler
+// export API handler using tRPC's createNextApiHandler
 export default createNextApiHandler({
-  router: appRouter,
-  createContext: createTRPCContext,
+  router: appRouter, // Use the appRouter for routing requests
+  createContext: createTRPCContext, // Use the createTRPCContext function for creating the tRPC context
   onError:
     env.NODE_ENV === "development"
-      ? ({ path, error }) => {
+      ? // Log errors to the consol in development environment
+        ({ path, error }) => {
           console.error(
-            `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`,
+            `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`
           );
         }
-      : undefined,
+      : // Don't log errors in production environment
+        undefined,
 });
