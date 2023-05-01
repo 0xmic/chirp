@@ -51,3 +51,5 @@ Chirp uses [Prisma](https://www.prisma.io) as its ORM. Make sure you have a data
 ```
 
 Once you've set up your environment variables and database, you can follow the instructions in the [Getting Started](#getting-started) section to run the project locally.
+
+Update 4/30/23: Database currently not configured
